@@ -1,8 +1,9 @@
-package org.litespring.beans.context.support;
+package org.litespring.context.support;
 
-import org.litespring.beans.context.ApplicationContext;
+import org.litespring.context.ApplicationContext;
 import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XMLBeanDefinitionReader;
+import org.litespring.core.io.ClassPathResource;
 
 public class ClassPathXmlApplicationContext implements ApplicationContext {
 
@@ -11,7 +12,7 @@ public class ClassPathXmlApplicationContext implements ApplicationContext {
     public ClassPathXmlApplicationContext(String configFile) {
         factory = new DefaultBeanFactory();
         XMLBeanDefinitionReader reader = new XMLBeanDefinitionReader(factory);
-        reader.loadBeanDefinitions(configFile);
+        reader.loadBeanDefinitions(new ClassPathResource(configFile));
     }
 
     public Object getBean(String beanId) {

@@ -1,8 +1,8 @@
 package org.litespring.text.v1;
 
 import org.junit.Test;
-import org.litespring.beans.context.ApplicationContext;
-import org.litespring.beans.context.support.ClassPathXmlApplicationContext;
+import org.litespring.context.ApplicationContext;
+import org.litespring.context.support.ClassPathXmlApplicationContext;
 import org.litespring.service.v1.PetStoreService;
 
 import static org.junit.Assert.assertNotNull;
