@@ -1,7 +1,6 @@
 package org.litespring.beans.factory.xml;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.litespring.beans.BeanDefinition;
@@ -9,13 +8,12 @@ import org.litespring.beans.factory.BeanDefinitionStoreException;
 import org.litespring.beans.factory.support.BeanDefinitionRegister;
 import org.litespring.beans.factory.support.GenericBeanDefinition;
 import org.litespring.core.io.Resource;
-import org.litespring.utils.ClassUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-public class XMLBeanDefinitionReader{
+public class XmlBeanDefinitionReader {
 
     private static final String IDENTITY = "id";
     private static final String CLASS_NAME = "class";
@@ -23,7 +21,7 @@ public class XMLBeanDefinitionReader{
 
     BeanDefinitionRegister beanDefinitionRegister;
 
-    public XMLBeanDefinitionReader(BeanDefinitionRegister beanDefinitionRegister) {
+    public XmlBeanDefinitionReader(BeanDefinitionRegister beanDefinitionRegister) {
         this.beanDefinitionRegister = beanDefinitionRegister;
     }
 
