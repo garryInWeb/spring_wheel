@@ -8,6 +8,9 @@ import org.litespring.utils.ClassUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 存放bean定义的map，继承的Singleton使他可以存放bean对应的类
+ */
 public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements ConfigurableBeanFactory,BeanDefinitionRegister {
 
     private Map<String,BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
