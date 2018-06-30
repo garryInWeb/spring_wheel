@@ -9,6 +9,7 @@ import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XMLBeanDefinitionReader;
 import org.litespring.core.io.ClassPathResource;
 import org.litespring.service.v1.PetStoreService;
+import org.litespring.service.v1.PrototypeService;
 
 import static org.junit.Assert.*;
 
@@ -26,15 +27,16 @@ public class BeanFactoryTest {
 
         reader.loadBeanDefinitions(new ClassPathResource("petstore-v1.xml"));
 
+        // singleton 测试
         BeanDefinition bd = factory.getBeanDefinition("petStore");
 
-//        assertTrue(bd.isSingleton());
-//
-//        assertTrue(bd.isPrototype());
-//
-//        assertEquals(BeanDefinition.SCOPE_DEFAULT,bd.getScope());
+        assertTrue(bd.isSingleton());
 
-        assertEquals("org.litespring.service.v1.PetStoreService",bd.getClassName());
+        assertFalse(bd.isPrototype());
+
+        assertEquals(BeanDefinition.SCOPE_DEFAULT,bd.getScope());
+
+        assertEquals("org.litespring.service.v1.PetStoreService",bd.getBeanClassName());
 
         PetStoreService petStoreService = (PetStoreService)factory.getBean("petStore");
 
@@ -43,6 +45,24 @@ public class BeanFactoryTest {
         PetStoreService petStoreService1 = (PetStoreService)factory.getBean("petStore");
 
         assertTrue(petStoreService.equals(petStoreService1));
+
+        // prototype 测试
+        BeanDefinition prototypeStore = factory.getBeanDefinition("prototypeStore");
+
+        assertTrue(prototypeStore.isPrototype());
+
+        assertFalse(prototypeStore.isSingleton());
+
+        assertEquals(BeanDefinition.SCOPE_PROTOTYPE,prototypeStore.getScope());
+
+        PrototypeService prototypeService = (PrototypeService)factory.getBean("prototypeStore");
+
+        assertNotNull(prototypeService);
+
+        PrototypeService prototypeService1 = (PrototypeService)factory.getBean("prototypeStore");
+
+        assertFalse(prototypeService.equals(prototypeService1));
+
     }
 
     @Test

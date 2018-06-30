@@ -6,8 +6,12 @@
 ">
 
     <bean id="petStore"
-          class="org.litespring.service.v1.PetStoreService">
+          class="org.litespring.service.v1.PetStoreService" >
 
+    </bean>
+
+    <bean id="prototypeStore"
+          class="org.litespring.service.v1.PrototypeService" scope="prototype" >
     </bean>
     <bean id="abc"
           class="xxx.xxx">

@@ -19,6 +19,7 @@ public class XMLBeanDefinitionReader{
 
     private static final String IDENTITY = "id";
     private static final String CLASS_NAME = "class";
+    private static final String SCOPE_ATTRIBUTE = "scope";
 
     BeanDefinitionRegister beanDefinitionRegister;
 
@@ -41,6 +42,9 @@ public class XMLBeanDefinitionReader{
                 String id = el.attributeValue(IDENTITY);
                 String className = el.attributeValue(CLASS_NAME);
                 BeanDefinition beanDefinition = new GenericBeanDefinition(id,className);
+                if (el.attribute(SCOPE_ATTRIBUTE) != null){
+                    beanDefinition.setScope(el.attributeValue(SCOPE_ATTRIBUTE));
+                }
                 beanDefinitionRegister.registerBeanDefinition(beanDefinition);
             }
         }catch (Exception e){
