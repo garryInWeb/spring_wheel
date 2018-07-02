@@ -10,7 +10,8 @@ import org.litespring.text.v1.ApplicationContextTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         ApplicationContextTestV2.class,
-        BeanDefinitionTestV2.class
+        BeanDefinitionTestV2.class,
+        BeanDefinitionValueResolverTest.class
 }
 )
 public class V2ALLTests {

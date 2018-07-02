@@ -1,10 +1,16 @@
 package org.litespring.beans.factory.support;
 
 import org.litespring.beans.BeanDefinition;
+import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.BeanCreationException;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.utils.ClassUtils;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,8 +39,42 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         }
         return createBean(bd);
     }
-
     private Object createBean(BeanDefinition bd) {
+        Object bean = instantiateBean(bd);
+        populate(bd,bean);
+        return bean;
+    }
+    public void populate(BeanDefinition bd,Object bean){
+        List<PropertyValue> propertys = bd.getPropertyValues();
+
+        if (propertys == null || propertys.isEmpty())
+            return;
+        BeanDefinitionValueResolver resolver = new BeanDefinitionValueResolver(this);
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+            PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
+            propertys.stream().forEach(property -> {
+                String propertyName = property.getName();
+                Object propertyValue = property.getValue();
+                Object resolverBean = resolver.resolveValueIfNecessary(propertyValue);
+
+                Arrays.stream(pds).forEach(pd -> {
+                    if (pd.getName().equals(propertyName)){
+                        try {
+                            pd.getWriteMethod().invoke(bean,resolverBean);
+                        } catch (Exception e){
+                            throw new BeanCreationException("Failed to set resolverBean [" + resolverBean + "] for class [" + bd.getBeanClassName() + "]");
+                        }
+                    }
+                });
+
+            });
+        }catch (Exception e){
+            throw new BeanCreationException("Failed to obtain BeanInfo for class ["+ bd.getBeanClassName() +"]",e);
+        }
+    }
+
+    private Object instantiateBean(BeanDefinition bd) {
         ClassLoader cl = this.getBeanClassLoader();
         try{
             Class<?> clazz = cl.loadClass(bd.getBeanClassName());
