@@ -1,6 +1,5 @@
 package org.litespring.text.v2;
 
-import javafx.application.Application;
 import org.junit.Assert;
 import org.junit.Test;
 import org.litespring.context.ApplicationContext;

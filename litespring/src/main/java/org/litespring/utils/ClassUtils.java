@@ -1,6 +1,11 @@
 package org.litespring.utils;
 
 public class ClassUtils {
+
+    private ClassUtils(){
+        throw new IllegalStateException("Utility Class");
+    }
+
     public static ClassLoader getDefaultClassLoader() {
         ClassLoader cl = null;
 
@@ -22,5 +27,10 @@ public class ClassUtils {
         }
 
         return cl;
+    }
+
+    public static <T> boolean isAssignableValue(Class<T> requiredType, Object value) {
+        Assert.notNull(requiredType,"Type must not be null.");
+        return false;
     }
 }

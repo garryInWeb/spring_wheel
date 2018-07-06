@@ -8,4 +8,8 @@ public class Assert {
         if (o == null)
             throw new IllegalArgumentException(message);
     }
+
+    private Assert(){
+        throw new IllegalStateException("Utility Class");
+    }
 }

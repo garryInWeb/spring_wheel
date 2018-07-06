@@ -1,6 +1,7 @@
 package org.litespring.beans.factory.xml;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -12,8 +13,6 @@ import org.litespring.beans.factory.config.TypedStringValue;
 import org.litespring.beans.factory.support.BeanDefinitionRegister;
 import org.litespring.beans.factory.support.GenericBeanDefinition;
 import org.litespring.core.io.Resource;
-import org.apache.commons.logging.LogFactory;
-
 import org.litespring.utils.StringUtils;
 
 import java.io.IOException;
@@ -48,7 +47,7 @@ public class XmlBeanDefinitionReader {
             Element root = document.getRootElement();
             Iterator<Element> elementIterator = root.elementIterator();
             while (elementIterator.hasNext()){
-                Element el = (Element)elementIterator.next();
+                Element el = elementIterator.next();
                 String id = el.attributeValue(IDENTITY);
                 String className = el.attributeValue(CLASS_NAME);
                 BeanDefinition beanDefinition = new GenericBeanDefinition(id,className);
@@ -66,7 +65,7 @@ public class XmlBeanDefinitionReader {
                 try {
                     in.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.fatal("InputStream close fail , because of " + e);
                 }
             }
         }
@@ -76,7 +75,7 @@ public class XmlBeanDefinitionReader {
     private void parsePropertyElement(Element el,BeanDefinition bd) {
         Iterator<Element> propertyElement = el.elementIterator(PROPERTY_ELEMENT);
         while (propertyElement.hasNext()){
-            Element property = (Element)propertyElement.next();
+            Element property = propertyElement.next();
             String propertyName = property.attributeValue(NAME);
             if (!StringUtils.hasLength(propertyName)){
                 log.fatal("Tag 'property' must have a 'name' attribute .");
@@ -101,11 +100,9 @@ public class XmlBeanDefinitionReader {
             if (!StringUtils.hasText(refName)){
                 log.fatal(elementName + " contains a empty 'ref' attribute");
             }
-            RuntimeBeanReference ref = new RuntimeBeanReference(refName);
-            return ref;
+            return new RuntimeBeanReference(refName);
         }else if (hasValueAttribute){
-            TypedStringValue valueHolder = new TypedStringValue(property.attributeValue(VALUE_ATTRIBUTE));
-            return valueHolder;
+            return new TypedStringValue(property.attributeValue(VALUE_ATTRIBUTE));
         }else{
             throw new RuntimeException(elementName + " must specify a ref or value");
         }
