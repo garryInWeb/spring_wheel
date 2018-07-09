@@ -10,6 +10,7 @@
         <property name="accountDao" ref="accountDao" />
         <property name="itemDao" ref="itemDao" />
         <property name="owner" value="fei" />
+        <property name="version" value="2" />
     </bean>
 
     <bean id="accountDao"

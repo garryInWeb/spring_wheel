@@ -2,6 +2,7 @@ package org.litespring.beans.factory.support;
 
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
+import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.BeanCreationException;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.utils.ClassUtils;
@@ -53,17 +54,19 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
             PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
+            SimpleTypeConverter simpleTypeConverter = new SimpleTypeConverter();
             propertys.stream().forEach(property -> {
                 String propertyName = property.getName();
                 Object propertyValue = property.getValue();
-                Object resolverBean = resolver.resolveValueIfNecessary(propertyValue);
+                Object resolverValue = resolver.resolveValueIfNecessary(propertyValue);
 
                 Arrays.stream(pds).forEach(pd -> {
                     if (pd.getName().equals(propertyName)){
                         try {
-                            pd.getWriteMethod().invoke(bean,resolverBean);
+                            Object converterValue = simpleTypeConverter.converterIfNecessary(resolverValue,pd.getPropertyType());
+                            pd.getWriteMethod().invoke(bean,converterValue);
                         } catch (Exception e){
-                            throw new BeanCreationException("Failed to set resolverBean [" + resolverBean + "] for class [" + bd.getBeanClassName() + "]");
+                            throw new BeanCreationException("Failed to set resolverValue [" + resolverValue + "] for class [" + bd.getBeanClassName() + "]");
                         }
                     }
                 });
