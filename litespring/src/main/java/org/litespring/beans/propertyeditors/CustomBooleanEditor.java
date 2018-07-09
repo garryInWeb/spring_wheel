@@ -30,8 +30,7 @@ public class CustomBooleanEditor extends PropertyEditorSupport{
         String input = (text != null ? text.trim(): null);
         if (this.allowEmpty && !StringUtils.hasText(input)){
             setValue(null);
-        }
-        if (VALUE_TRUE.equalsIgnoreCase(input) || VALUE_ON.equalsIgnoreCase(input)
+        }else if (VALUE_TRUE.equalsIgnoreCase(input) || VALUE_ON.equalsIgnoreCase(input)
                 || VALUE_YES.equalsIgnoreCase(input) || VALUE_1.equals(input)){
             setValue(Boolean.TRUE);
         }else if (VALUE_FALSE.equalsIgnoreCase(input) || VALUE_OFF.equalsIgnoreCase(input)
