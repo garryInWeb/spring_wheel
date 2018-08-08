@@ -17,6 +17,8 @@ public class ClassUtils {
      * type as value, for example: int.class -> Integer.class.
      */
     private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new HashMap<Class<?>, Class<?>>(8);
+    public static final String PACKAGE_SEPARATOR = ".";
+    public static final String PATH_SEPARATOR = "/";
 
     static {
         wrapperToPrimitiveTypeMap.put(Boolean.class, boolean.class);
@@ -84,5 +86,10 @@ public class ClassUtils {
             }
         }
         return false;
+    }
+
+    public static String convertClassNameToResourcePath(String className) {
+        Assert.notNull(className,"Class Name must not be null!");
+        return className.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR);
     }
 }
