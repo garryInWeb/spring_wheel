@@ -2,6 +2,7 @@ package org.litespring.core.type.classreading;
 
 
 import org.litespring.core.annotation.AnnotationAttributes;
+import org.litespring.core.type.AnnotationMetadata;
 import org.springframework.asm.AnnotationVisitor;
 import org.springframework.asm.SpringAsmInfo;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 /**
  * Created by zhengtengfei on 2018/8/6.
  */
-public class AnnotationAttributesReadingVisitor extends AnnotationVisitor {
+final class AnnotationAttributesReadingVisitor extends AnnotationVisitor{
 
     private final String annotationType;
 

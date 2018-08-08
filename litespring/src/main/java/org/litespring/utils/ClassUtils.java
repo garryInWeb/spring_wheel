@@ -92,4 +92,8 @@ public class ClassUtils {
         Assert.notNull(className,"Class Name must not be null!");
         return className.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR);
     }
+    public static String convertResourcePathToClassName(String className) {
+        Assert.notNull(className,"Class Name must not be null!");
+        return className.replace(PATH_SEPARATOR, PACKAGE_SEPARATOR);
+    }
 }
