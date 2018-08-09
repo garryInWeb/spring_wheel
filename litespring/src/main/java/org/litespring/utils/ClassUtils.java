@@ -19,6 +19,8 @@ public class ClassUtils {
     private static final Map<Class<?>, Class<?>> primitiveTypeToWrapperMap = new HashMap<Class<?>, Class<?>>(8);
     public static final String PACKAGE_SEPARATOR = ".";
     public static final String PATH_SEPARATOR = "/";
+    public static final String CGLIB_CLASS_SEPARATOR = "&&";
+    public static final String INNER_CLASS_SEPARATOR = "$";
 
     static {
         wrapperToPrimitiveTypeMap.put(Boolean.class, boolean.class);
@@ -34,6 +36,8 @@ public class ClassUtils {
             primitiveTypeToWrapperMap.put(entry.getValue(),entry.getKey());
         }
     }
+
+    private static String shortName;
 
 
     private ClassUtils(){
@@ -95,5 +99,16 @@ public class ClassUtils {
     public static String convertResourcePathToClassName(String className) {
         Assert.notNull(className,"Class Name must not be null!");
         return className.replace(PATH_SEPARATOR, PACKAGE_SEPARATOR);
+    }
+
+    public static String getShortName(String className) {
+        int lastDotIndex = className.lastIndexOf(PACKAGE_SEPARATOR);
+        int nameEndIndex = className.indexOf(CGLIB_CLASS_SEPARATOR);
+        if (nameEndIndex == -1){
+            nameEndIndex = className.length();
+        }
+        String shortName = className.substring(lastDotIndex+1,nameEndIndex);
+        return shortName.replace(INNER_CLASS_SEPARATOR,PACKAGE_SEPARATOR);
+        
     }
 }

@@ -8,6 +8,7 @@ import org.litespring.utils.Assert;
 import org.litespring.utils.ClassUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -35,7 +36,7 @@ public class PackageResourceLoader {
         return classLoader;
     }
 
-    public Resource[] getResources(String basePackage) {
+    public Resource[] getResources(String basePackage) throws IOException {
         Assert.notNull(basePackage,"basePackage must not be null!");
         String location = ClassUtils.convertClassNameToResourcePath(basePackage);
         ClassLoader cl = getClassLoader();

@@ -19,6 +19,9 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     private ConstructorArgument constructorArgument = new ConstructorArgument();
 
+    public GenericBeanDefinition() {
+    }
+
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
         this.beanClassName = beanClassName;
@@ -40,6 +43,10 @@ public class GenericBeanDefinition implements BeanDefinition {
         this.scope = scope;
         this.singleton = SCOPE_SINGLETON.equals(scope) || SCOPE_DEFAULT.equals(scope);
         this.prototype = SCOPE_PROTOTYPE.equals(scope);
+    }
+
+    public void setBeanClassName(String beanClassName) {
+        this.beanClassName = beanClassName;
     }
 
     public String getBeanClassName() {
@@ -64,4 +71,7 @@ public class GenericBeanDefinition implements BeanDefinition {
         return !this.constructorArgument.isEmpty();
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }
