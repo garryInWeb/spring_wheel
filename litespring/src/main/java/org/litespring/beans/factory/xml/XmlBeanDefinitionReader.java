@@ -13,6 +13,7 @@ import org.litespring.beans.factory.config.RuntimeBeanReference;
 import org.litespring.beans.factory.config.TypedStringValue;
 import org.litespring.beans.factory.support.BeanDefinitionRegister;
 import org.litespring.beans.factory.support.GenericBeanDefinition;
+import org.litespring.context.annotation.ClassPathBeanDefinitionScanner;
 import org.litespring.core.io.Resource;
 import org.litespring.utils.StringUtils;
 
@@ -34,6 +35,12 @@ public class XmlBeanDefinitionReader {
     public static final String TYPE_ATTRIBUTE = "type";
     public static final String NAME_ATTRIBUTE = "name";
 
+    public static final String BEANS_NAMESPACE_URI = "http://www.springframework.org/schema/beans";
+
+    public static final String CONTEXT_NAMESPACE_URI = "http://www.springframework.org/schema/context";
+
+    private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
+
     BeanDefinitionRegister beanDefinitionRegister;
 
     public XmlBeanDefinitionReader(BeanDefinitionRegister beanDefinitionRegister) {
@@ -52,15 +59,13 @@ public class XmlBeanDefinitionReader {
             Iterator<Element> elementIterator = root.elementIterator();
             while (elementIterator.hasNext()){
                 Element el = elementIterator.next();
-                String id = el.attributeValue(IDENTITY);
-                String className = el.attributeValue(CLASS_NAME);
-                BeanDefinition beanDefinition = new GenericBeanDefinition(id,className);
-                if (el.attribute(SCOPE_ATTRIBUTE) != null){
-                    beanDefinition.setScope(el.attributeValue(SCOPE_ATTRIBUTE));
+                String namespaceUri = el.getNamespaceURI();
+                if (this.isDefaultNamespace(namespaceUri)){
+                    parseDefaultElement(el);
+                }else if (this.isContextNamespace(namespaceUri)){
+                    parseContextElement(el);
                 }
-                parsePropertyElement(el,beanDefinition);
-                parseConstructor(el,beanDefinition);
-                beanDefinitionRegister.registerBeanDefinition(beanDefinition);
+
             }
         }catch (Exception e){
             // TODO 这个e抛得。。。
@@ -75,6 +80,32 @@ public class XmlBeanDefinitionReader {
             }
         }
 
+    }
+
+    private void parseContextElement(Element el) {
+        String basePackages = el.attributeValue(BASE_PACKAGE_ATTRIBUTE);
+        ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(beanDefinitionRegister);
+        scanner.doScan(basePackages);
+    }
+
+    private void parseDefaultElement(Element el) {
+        String id = el.attributeValue(IDENTITY);
+        String className = el.attributeValue(CLASS_NAME);
+        BeanDefinition beanDefinition = new GenericBeanDefinition(id,className);
+        if (el.attribute(SCOPE_ATTRIBUTE) != null){
+            beanDefinition.setScope(el.attributeValue(SCOPE_ATTRIBUTE));
+        }
+        parsePropertyElement(el,beanDefinition);
+        parseConstructor(el,beanDefinition);
+        beanDefinitionRegister.registerBeanDefinition(beanDefinition);
+    }
+
+    private boolean isContextNamespace(String namespaceUri) {
+        return (StringUtils.hasLength(namespaceUri) && CONTEXT_NAMESPACE_URI.equals(namespaceUri));
+    }
+
+    private boolean isDefaultNamespace(String namespaceUri) {
+        return (StringUtils.hasLength(namespaceUri) && BEANS_NAMESPACE_URI.equals(namespaceUri));
     }
 
     private void parseConstructor(Element el, BeanDefinition beanDefinition) {
