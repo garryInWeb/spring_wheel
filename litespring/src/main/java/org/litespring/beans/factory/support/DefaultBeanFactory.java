@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 存放bean定义的map，继承的Singleton使他可以存放bean对应的类
+ * 存放bean定义的map，继承的Singleton使他可以存放bean对应的对象
  */
 public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements ConfigurableBeanFactory,BeanDefinitionRegister {
 
@@ -26,10 +26,16 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
     public DefaultBeanFactory() {
     }
 
+    /**
+     * 通过 id 获取 bean 实体对象
+     * @param beanId
+     * @return
+     */
     public Object getBean(String beanId) {
         BeanDefinition bd = this.getBeanDefinition(beanId);
         if (bd == null)
             return null;
+        // 配置文件的单例判断
         if (bd.isSingleton()){
             Object bean = this.getSingletonBean(beanId);
             if (bean == null){
@@ -40,6 +46,12 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         }
         return createBean(bd);
     }
+
+    /**
+     * 创建 beanDefinition 对应的 bean实例
+     * @param bd
+     * @return
+     */
     private Object createBean(BeanDefinition bd) {
         Object bean = instantiateBean(bd);
         populate(bd,bean);
@@ -77,7 +89,13 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         }
     }
 
+    /**
+     * 通过构造函数或者反射 new bean对象
+     * @param bd
+     * @return
+     */
     private Object instantiateBean(BeanDefinition bd) {
+        // 通过判断是否含有构造参数确定是否调用有参进行构造
         if (bd.hasConstructorArgumentValues()){
             ConstructorResolver constructorResolver = new ConstructorResolver(this);
             return constructorResolver.autowireConstructor(bd);

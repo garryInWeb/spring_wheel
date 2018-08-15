@@ -15,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Created by zhengtengfei on 2018/8/6.
+ * 加载包下所有文件为Resource
  */
 public class PackageResourceLoader {
 
@@ -36,10 +36,18 @@ public class PackageResourceLoader {
         return classLoader;
     }
 
+    /**
+     * 获取包名下所有文件
+     * @param basePackage 包名
+     * @return
+     * @throws IOException
+     */
     public Resource[] getResources(String basePackage) throws IOException {
         Assert.notNull(basePackage,"basePackage must not be null!");
+        // 包名转换为相对路径
         String location = ClassUtils.convertClassNameToResourcePath(basePackage);
         ClassLoader cl = getClassLoader();
+        // 获取包名根目录File对象
         URL url = cl.getResource(location);
         File rootDir = new File(url.getFile());
 
@@ -52,6 +60,10 @@ public class PackageResourceLoader {
         return result;
     }
 
+    /**
+     * @param rootDir
+     * @return
+     */
     private Set<File> retrieveMatchingFiles(File rootDir) {
         if (!rootDir.exists()){
             if (logger.isDebugEnabled()){

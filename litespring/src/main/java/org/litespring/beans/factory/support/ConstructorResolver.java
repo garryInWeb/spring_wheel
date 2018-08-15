@@ -32,11 +32,12 @@ public class ConstructorResolver {
         Object[] argsToUser = null;
         Class<?> beanClass = null;
         try{
+            // 获取 class 对象
             beanClass = beanFactory.getBeanClassLoader().loadClass(bd.getBeanClassName());
         } catch (ClassNotFoundException e) {
             throw new BeanCreationException(bd.getBeanClassName(),"Instantiation of bean fail,can't resolve class",e);
         }
-
+        // 获取所有构造器对象
         Constructor<?>[] candidates = beanClass.getConstructors();
         BeanDefinitionValueResolver resolver = new BeanDefinitionValueResolver(this.beanFactory);
 

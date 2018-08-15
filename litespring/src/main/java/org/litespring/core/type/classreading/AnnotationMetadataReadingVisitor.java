@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by zhengtengfei on 2018/8/6.
+ *
  */
 public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor implements AnnotationMetadata{
     private final Set<String> annotationSet = new LinkedHashSet<String>(4);
@@ -19,10 +19,19 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 
     public AnnotationMetadataReadingVisitor() {
     }
+
+    /**
+     * 自定义 annotation 的读法
+     * @param desc
+     * @param visiable
+     * @return
+     */
     @Override
     public AnnotationVisitor visitAnnotation(final String desc,boolean visiable){
+        // getType 相当于获得一个 Class
         String className = Type.getType(desc).getClassName();
         this.annotationSet.add(className);
+        // 返回读取到的 annotationVisitor
         return new AnnotationAttributesReadingVisitor(className,this.attributesMap);
     }
 

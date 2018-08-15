@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by zhengtengfei on 2018/8/8.
+ * ASM 读取文件 class 内容
  */
 public class SimpleMetadataReader implements MetadataReader {
 
@@ -29,6 +29,7 @@ public class SimpleMetadataReader implements MetadataReader {
             in.close();
         }
         AnnotationMetadataReadingVisitor visitor = new AnnotationMetadataReadingVisitor();
+        // 调用visitor的方法，ASM 读取类信息
         classReader.accept(visitor, ClassReader.SKIP_DEBUG);
 
         this.annotationMetadata = visitor;

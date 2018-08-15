@@ -4,7 +4,7 @@ import org.litespring.core.io.FileSystemResource;
 import org.litespring.core.io.Resource;
 
 /**
- * Created by zhengtengfei on 2018/6/30.
+ * 通过 File 读取配置文件的 context
  */
 public class FileSystemXmlApplicationContext extends AbstractApplicationContext {
 

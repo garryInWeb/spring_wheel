@@ -49,13 +49,20 @@ public class ClassPathBeanDefinitionScanner {
         return beanDefinitions;
     }
 
+    /**
+     *
+     * @param basepackage
+     * @return
+     */
     private Set<BeanDefinition> findCandidatasComponent(String basepackage) {
         Set<BeanDefinition> candidates = new LinkedHashSet<>();
         try {
+            // 获取包名下所有文件resource
             Resource[] resources = this.resourceLoader.getResources(basepackage);
 
             for (Resource resource : resources) {
                 try {
+                    // ASM 解析
                     MetadataReader metadataReader = new SimpleMetadataReader(resource);
                     if (metadataReader.getAnnotationMetadata().hasAnnotation(Component.class.getName())) {
                         ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader.getAnnotationMetadata());

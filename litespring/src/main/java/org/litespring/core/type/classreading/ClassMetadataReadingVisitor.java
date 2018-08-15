@@ -7,7 +7,7 @@ import org.springframework.asm.Opcodes;
 import org.springframework.asm.SpringAsmInfo;
 
 /**
- * Created by zhengtengfei on 2018/8/6.
+ * 保存类的基本信息
  */
 public class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata{
 
