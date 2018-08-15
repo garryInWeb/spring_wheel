@@ -2,6 +2,7 @@ package org.litespring.beans.factory.support;
 
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
+import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.BeanCreationException;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.utils.ClassUtils;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 存放bean定义的map，继承的Singleton使他可以存放bean对应的类
+ * 存放bean定义的map，继承的Singleton使他可以存放bean对应的对象
  */
 public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements ConfigurableBeanFactory,BeanDefinitionRegister {
 
@@ -25,10 +26,16 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
     public DefaultBeanFactory() {
     }
 
+    /**
+     * 通过 id 获取 bean 实体对象
+     * @param beanId
+     * @return
+     */
     public Object getBean(String beanId) {
         BeanDefinition bd = this.getBeanDefinition(beanId);
         if (bd == null)
             return null;
+        // 配置文件的单例判断
         if (bd.isSingleton()){
             Object bean = this.getSingletonBean(beanId);
             if (bean == null){
@@ -39,6 +46,12 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         }
         return createBean(bd);
     }
+
+    /**
+     * 创建 beanDefinition 对应的 bean实例
+     * @param bd
+     * @return
+     */
     private Object createBean(BeanDefinition bd) {
         Object bean = instantiateBean(bd);
         populate(bd,bean);
@@ -53,17 +66,19 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
             PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
+            SimpleTypeConverter simpleTypeConverter = new SimpleTypeConverter();
             propertys.stream().forEach(property -> {
                 String propertyName = property.getName();
                 Object propertyValue = property.getValue();
-                Object resolverBean = resolver.resolveValueIfNecessary(propertyValue);
+                Object resolverValue = resolver.resolveValueIfNecessary(propertyValue);
 
                 Arrays.stream(pds).forEach(pd -> {
                     if (pd.getName().equals(propertyName)){
                         try {
-                            pd.getWriteMethod().invoke(bean,resolverBean);
+                            Object converterValue = simpleTypeConverter.converterIfNecessary(resolverValue,pd.getPropertyType());
+                            pd.getWriteMethod().invoke(bean,converterValue);
                         } catch (Exception e){
-                            throw new BeanCreationException("Failed to set resolverBean [" + resolverBean + "] for class [" + bd.getBeanClassName() + "]");
+                            throw new BeanCreationException("Failed to set resolverValue [" + resolverValue + "] for class [" + bd.getBeanClassName() + "]");
                         }
                     }
                 });
@@ -74,13 +89,24 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         }
     }
 
+    /**
+     * 通过构造函数或者反射 new bean对象
+     * @param bd
+     * @return
+     */
     private Object instantiateBean(BeanDefinition bd) {
-        ClassLoader cl = this.getBeanClassLoader();
-        try{
-            Class<?> clazz = cl.loadClass(bd.getBeanClassName());
-            return clazz.newInstance();
-        } catch (Exception e) {
-            throw new BeanCreationException("Create bean for " + bd.getBeanClassName() + "fail",e);
+        // 通过判断是否含有构造参数确定是否调用有参进行构造
+        if (bd.hasConstructorArgumentValues()){
+            ConstructorResolver constructorResolver = new ConstructorResolver(this);
+            return constructorResolver.autowireConstructor(bd);
+        }else {
+            ClassLoader cl = this.getBeanClassLoader();
+            try {
+                Class<?> clazz = cl.loadClass(bd.getBeanClassName());
+                return clazz.newInstance();
+            } catch (Exception e) {
+                throw new BeanCreationException("Create bean for " + bd.getBeanClassName() + "fail", e);
+            }
         }
     }
 

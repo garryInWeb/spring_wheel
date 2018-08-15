@@ -1,8 +1,9 @@
 package org.litespring.beans.factory.config;
 
 /**
- * Created by zhengtengfei on 2018/6/30.
+ * 依赖注入的抽象
  */
+
 public class RuntimeBeanReference {
     private final String beanName;
 

@@ -2,7 +2,6 @@ package org.litespring.text.v2;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.litespring.text.v1.ApplicationContextTest;
 
 /**
  * Created by zhengtengfei on 2018/6/30.
@@ -11,7 +10,10 @@ import org.litespring.text.v1.ApplicationContextTest;
 @Suite.SuiteClasses({
         ApplicationContextTestV2.class,
         BeanDefinitionTestV2.class,
-        BeanDefinitionValueResolverTest.class
+        BeanDefinitionValueResolverTest.class,
+        CustomBooleanEditorTest.class,
+        CustomNumberEditorTest.class,
+        TypeConverterTest.class
 }
 )
 public class V2ALLTests {

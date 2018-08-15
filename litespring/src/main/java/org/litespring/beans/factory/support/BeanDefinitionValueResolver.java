@@ -1,24 +1,33 @@
 package org.litespring.beans.factory.support;
 
+import org.litespring.beans.factory.BeanFactory;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
 import org.litespring.beans.factory.config.TypedStringValue;
 
 /**
- * Created by zhengtengfei on 2018/6/30.
+ * 对 bean 的字段进行初始化的对象
  */
 public class BeanDefinitionValueResolver {
-    private final DefaultBeanFactory factory;
+    private final BeanFactory factory;
 
-    public BeanDefinitionValueResolver(DefaultBeanFactory factory) {
+    public BeanDefinitionValueResolver(BeanFactory factory) {
         this.factory = factory;
     }
 
+    /**
+     * 对 bean 的字段进行初始化返回该对象
+     *
+     * @param value
+     * @return
+     */
     public Object resolveValueIfNecessary(Object value){
+        // ref
         if (value instanceof RuntimeBeanReference){
             RuntimeBeanReference ref = (RuntimeBeanReference) value;
             String refName = ref.getBeanName();
             Object bean = this.factory.getBean(refName);
             return bean;
+        // value
         }else if(value instanceof TypedStringValue){
             TypedStringValue refString = (TypedStringValue) value;
             return refString.getValue();

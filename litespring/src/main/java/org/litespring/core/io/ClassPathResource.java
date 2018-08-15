@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by zhengtengfei on 2018/6/27.
+ * 通过 ClassLoader 读取配置文件的 Resource
  */
 public class ClassPathResource implements Resource {
     private String path;

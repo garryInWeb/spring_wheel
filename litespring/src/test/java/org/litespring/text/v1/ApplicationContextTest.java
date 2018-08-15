@@ -8,6 +8,11 @@ import org.litespring.service.v1.PetStoreService;
 
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * 测试 ClassPathXmlApplicationContext 和 FileSystemXmlApplicationContext
+ * ClassPathXmlApplicationContext 通过 ClassLoader 对配置文件进行读取
+ * FileSystemXmlApplicationContext 通过 File 对配置文件进行读取
+ */
 public class ApplicationContextTest {
 
     @Test

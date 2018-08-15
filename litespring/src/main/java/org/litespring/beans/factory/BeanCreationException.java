@@ -20,15 +20,11 @@ public class BeanCreationException extends BeansException {
     }
 
     public BeanCreationException(String beanName,String msg, Throwable cause) {
-        super(msg, cause);
+        this(beanName, msg);
         initCause(cause);
     }
 
     public String getBeanName() {
         return beanName;
-    }
-
-    public void setBeanName(String beanName) {
-        this.beanName = beanName;
     }
 }
