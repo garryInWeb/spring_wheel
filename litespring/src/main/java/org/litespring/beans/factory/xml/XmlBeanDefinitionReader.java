@@ -91,7 +91,7 @@ public class XmlBeanDefinitionReader {
     }
 
     /**
-     * 扫描包名下所有带注解的类
+     * 扫描包名下所有带注解的类，注册到beanFactory中
      * @param el
      */
     private void parseContextElement(Element el) {

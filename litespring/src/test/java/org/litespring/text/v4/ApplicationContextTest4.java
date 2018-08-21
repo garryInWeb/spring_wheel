@@ -7,7 +7,7 @@ import org.litespring.context.support.ClassPathXmlApplicationContext;
 import org.litespring.service.v4.PetStoreService;
 
 /**
- * Created by zhengtengfei on 2018/8/10.
+ * 终极目标
  */
 public class ApplicationContextTest4 {
 
