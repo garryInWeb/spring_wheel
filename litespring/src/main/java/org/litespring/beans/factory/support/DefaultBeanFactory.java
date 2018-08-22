@@ -132,7 +132,8 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
      * @param descriptor
      * @return
      */
-    public Object resolveDependency(DependencyDescriptor descriptor) {
+    @Override
+    public Object resolveDenpendency(DependencyDescriptor descriptor) {
         Class<?> typeToMatch = descriptor.getDenpendencyType();
 
         for (BeanDefinition bd : this.beanDefinitionMap.values()){
@@ -161,4 +162,5 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
             }
         }
     }
+
 }

@@ -25,7 +25,7 @@ public class DependencyDescriptorTest {
 
         Field f = PetStoreService.class.getDeclaredField("accountDao");
         DependencyDescriptor descriptor = new DependencyDescriptor(f,true);
-        Object o = factory.resolveDependency(descriptor);
+        Object o = factory.resolveDenpendency(descriptor);
         Assert.assertTrue(o instanceof AccountDao);
 
     }
