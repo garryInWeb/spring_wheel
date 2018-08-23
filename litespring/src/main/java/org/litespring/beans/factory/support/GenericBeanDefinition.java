@@ -10,6 +10,7 @@ import java.util.List;
 public class GenericBeanDefinition implements BeanDefinition {
     private String id;
     private String beanClassName;
+    private Class<?> beanClass;
 
     private boolean singleton = true;
     private boolean prototype = false;
@@ -69,6 +70,33 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public boolean hasConstructorArgumentValues() {
         return !this.constructorArgument.isEmpty();
+    }
+
+    @Override
+    public boolean hasBeanClass() {
+        return beanClass != null;
+    }
+
+    @Override
+    public Class<?> resolveBeanClass(ClassLoader beanClassLoader) throws ClassNotFoundException {
+        String className = getBeanClassName();
+        if (className == null){
+            return null;
+        }
+        Class<?> resolveClass = beanClassLoader.loadClass(className);
+        this.beanClass = resolveClass;
+        return resolveClass;
+
+    }
+
+    @Override
+    public Class<?> getBeanClass() {
+        if (beanClass == null){
+            throw new IllegalStateException(
+                    "Bean class name [" + this.getBeanClassName() + "] has not been resolved into an actual class"
+            );
+        }
+        return beanClass;
     }
 
     public void setId(String id) {

@@ -18,7 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Created by zhengtengfei on 2018/8/8.
+ * 提供扫描包并注册到factory的方法
  */
 public class ClassPathBeanDefinitionScanner {
 
@@ -35,6 +35,11 @@ public class ClassPathBeanDefinitionScanner {
         this.register = register;
     }
 
+    /**
+     * 扫描包下带Component注解的类，注册到beanFactory中
+     * @param packageToScan
+     * @return
+     */
     public Set<BeanDefinition> doScan(String packageToScan){
         String[] basePackages = StringUtils.tokenizeToStringArray(packageToScan,",");
         Set<BeanDefinition> beanDefinitions = new LinkedHashSet<BeanDefinition>();
@@ -50,7 +55,7 @@ public class ClassPathBeanDefinitionScanner {
     }
 
     /**
-     *
+     * 扫描包下所有带Component注解的类包装成BeanDefinition返回
      * @param basepackage
      * @return
      */
@@ -65,7 +70,9 @@ public class ClassPathBeanDefinitionScanner {
                     // ASM 解析
                     MetadataReader metadataReader = new SimpleMetadataReader(resource);
                     if (metadataReader.getAnnotationMetadata().hasAnnotation(Component.class.getName())) {
+                        // 注解的抽象类
                         ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader.getAnnotationMetadata());
+                        // 获取注解的value作为bean对象的id
                         String beanName = this.beanNameGenerator.generateBeanName(sbd, register);
                         sbd.setId(beanName);
                         candidates.add(sbd);

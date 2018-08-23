@@ -4,12 +4,16 @@ import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.BeanCreationException;
+import org.litespring.beans.factory.config.BeanPostProcessor;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
+import org.litespring.beans.factory.config.DependencyDescriptor;
+import org.litespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.litespring.utils.ClassUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,8 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
 
     private Map<String,BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
     private ClassLoader classLoader;
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
 
     public DefaultBeanFactory() {
     }
@@ -58,6 +64,13 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         return bean;
     }
     public void populate(BeanDefinition bd,Object bean){
+
+        for (BeanPostProcessor beanPostProcessor : this.getBeanPostProcessors()){
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
+                ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(bean,bd.getId());
+            }
+        }
+
         List<PropertyValue> propertys = bd.getPropertyValues();
 
         if (propertys == null || propertys.isEmpty())
@@ -124,5 +137,47 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
 
     public ClassLoader getBeanClassLoader() {
         return (this.classLoader == null ?ClassUtils.getDefaultClassLoader():this.classLoader);
+    }
+
+    /**
+     * 循环bd的map，匹配传入的对象
+     * @param descriptor
+     * @return
+     */
+    @Override
+    public Object resolveDenpendency(DependencyDescriptor descriptor) {
+        Class<?> typeToMatch = descriptor.getDenpendencyType();
+
+        for (BeanDefinition bd : this.beanDefinitionMap.values()){
+            //确保beanDefinition对象有class
+            resolveBeanClass(bd);
+            Class<?> beanClass = bd.getBeanClass();
+            if (typeToMatch.isAssignableFrom(beanClass)){
+                return this.getBean(bd.getId());
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 对没有对象的beanDefinition赋值
+     * @param bd
+     */
+    private void resolveBeanClass(BeanDefinition bd) {
+        if (bd.hasBeanClass()){
+            return;
+        }else{
+            try{
+                bd.resolveBeanClass(this.getBeanClassLoader());
+            }catch (ClassNotFoundException e){
+                throw new RuntimeException("can't load class " + bd.getBeanClassName());
+            }
+        }
+    }
+    public void addBeanPostProcessor(BeanPostProcessor postProcessor){
+        this.beanPostProcessors.add(postProcessor);
+    }
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return beanPostProcessors;
     }
 }
