@@ -4,13 +4,16 @@ import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.BeanCreationException;
+import org.litespring.beans.factory.config.BeanPostProcessor;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.beans.factory.config.DependencyDescriptor;
+import org.litespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.litespring.utils.ClassUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,8 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
 
     private Map<String,BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
     private ClassLoader classLoader;
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
+
 
     public DefaultBeanFactory() {
     }
@@ -59,6 +64,13 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         return bean;
     }
     public void populate(BeanDefinition bd,Object bean){
+
+        for (BeanPostProcessor beanPostProcessor : this.getBeanPostProcessors()){
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
+                ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(bean,bd.getId());
+            }
+        }
+
         List<PropertyValue> propertys = bd.getPropertyValues();
 
         if (propertys == null || propertys.isEmpty())
@@ -162,5 +174,10 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
             }
         }
     }
-
+    public void addBeanPostProcessor(BeanPostProcessor postProcessor){
+        this.beanPostProcessors.add(postProcessor);
+    }
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return beanPostProcessors;
+    }
 }

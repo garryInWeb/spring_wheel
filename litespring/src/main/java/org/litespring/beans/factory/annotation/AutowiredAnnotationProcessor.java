@@ -1,6 +1,9 @@
 package org.litespring.beans.factory.annotation;
 
+import org.litespring.beans.BeansException;
+import org.litespring.beans.factory.BeanCreationException;
 import org.litespring.beans.factory.config.AutowireCapableBeanFactory;
+import org.litespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.utils.AnnotationUtils;
 import org.litespring.utils.ReflectionUtils;
@@ -17,13 +20,13 @@ import java.util.Set;
 /**
  * Created by zhengtengfei on 2018/8/22.
  */
-public class AutowiredAnnotationProcessor {
+public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostProcessor{
     private AutowireCapableBeanFactory beanFactory;
     private Set<Class<? extends Annotation>> autowiredAnnotationTypes = new LinkedHashSet<>();
     private String requiredParamterName = "required";
 
 
-    public void setBeanFactory(DefaultBeanFactory beanFactory) {
+    public void setBeanFactory(AutowireCapableBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
     public AutowiredAnnotationProcessor(){
@@ -67,5 +70,17 @@ public class AutowiredAnnotationProcessor {
                 return ann;
         }
         return null;
+    }
+
+    @Override
+    public void postProcessPropertyValues(Object bean, String beanName) throws BeansException {
+        InjectionMetadata injectionMetadata = buildAutowiringMetadata(bean.getClass());
+        try{
+            injectionMetadata.inject(bean);
+        }
+        catch (Throwable ex){
+            throw new BeanCreationException(beanName, "Injection of autowired dependencies failed", ex);
+
+        }
     }
 }
