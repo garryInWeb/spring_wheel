@@ -24,4 +24,8 @@ public class InjectionMetadata {
             element.inject(target);
         }
     }
+
+    public LinkedList<InjectionElement> getElements() {
+        return elements;
+    }
 }
