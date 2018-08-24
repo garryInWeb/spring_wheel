@@ -1,7 +1,6 @@
 package org.litespring.context.support;
 
 import org.litespring.beans.factory.annotation.AutowiredAnnotationProcessor;
-import org.litespring.beans.factory.config.BeanPostProcessor;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XmlBeanDefinitionReader;

@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.litespring.text.v1.V1AllTests;
 import org.litespring.text.v2.V2ALLTests;
 import org.litespring.text.v3.V3ALLTests;
-import org.litespring.text.v4.*;
+import org.litespring.text.v4.V4ALLTests;
 
 /**
  * Created by zhengtengfei on 2018/8/21.

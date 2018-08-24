@@ -4,7 +4,6 @@ import org.litespring.beans.BeansException;
 import org.litespring.beans.factory.BeanCreationException;
 import org.litespring.beans.factory.config.AutowireCapableBeanFactory;
 import org.litespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
-import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.utils.AnnotationUtils;
 import org.litespring.utils.ReflectionUtils;
 

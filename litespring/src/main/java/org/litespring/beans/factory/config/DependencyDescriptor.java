@@ -1,6 +1,5 @@
 package org.litespring.beans.factory.config;
 
-import com.sun.beans.finder.FieldFinder;
 import org.litespring.utils.Assert;
 
 import java.lang.reflect.Field;
