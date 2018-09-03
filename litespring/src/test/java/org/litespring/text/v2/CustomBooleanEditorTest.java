@@ -3,7 +3,6 @@ package org.litespring.text.v2;
 import org.junit.Assert;
 import org.junit.Test;
 import org.litespring.beans.propertyeditors.CustomBooleanEditor;
-import org.litespring.beans.propertyeditors.CustomNumberEditor;
 
 /**
  * Created by zhengtengfei on 2018/7/6.

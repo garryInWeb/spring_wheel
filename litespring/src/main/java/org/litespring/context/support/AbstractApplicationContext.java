@@ -1,7 +1,6 @@
 package org.litespring.context.support;
 
 import org.litespring.beans.factory.annotation.AutowiredAnnotationProcessor;
-import org.litespring.beans.factory.config.BeanPostProcessor;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XmlBeanDefinitionReader;
@@ -46,5 +45,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
         AutowiredAnnotationProcessor processor = new AutowiredAnnotationProcessor();
         processor.setBeanFactory(factory);
         factory.addBeanPostProcessor(processor);
+    }
+
+    public Class<?> getType(String name){
+        return this.factory.getType(name);
     }
 }
