@@ -1,6 +1,7 @@
 package org.litespring.aop.aspectj;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.litespring.aop.config.AspectInstanceFactory;
 
 import java.lang.reflect.Method;
 
@@ -9,8 +10,8 @@ import java.lang.reflect.Method;
  */
 public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice {
 
-    public AspectJAfterReturningAdvice(Method adviceMethod, AspectJExpressionPoincut poincut, Object adviceObject) {
-        super(adviceMethod, poincut, adviceObject);
+    public AspectJAfterReturningAdvice(Method adviceMethod, AspectJExpressionPoincut poincut, AspectInstanceFactory factory) {
+        super(adviceMethod, poincut, factory);
     }
     public Object invoke(MethodInvocation methodInvocation) throws Throwable{
         Object o = methodInvocation.proceed();
