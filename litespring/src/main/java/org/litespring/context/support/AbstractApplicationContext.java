@@ -8,6 +8,8 @@ import org.litespring.context.ApplicationContext;
 import org.litespring.core.io.Resource;
 import org.litespring.utils.ClassUtils;
 
+import java.util.List;
+
 /**
  * context 抽象类，在 new 对象时就会通过配置文件初始化 factory
  */
@@ -49,5 +51,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 
     public Class<?> getType(String name){
         return this.factory.getType(name);
+    }
+
+    @Override
+    public List<Object> getBeansByType(Class<?> type) {
+        return this.factory.getBeansByType(type);
     }
 }

@@ -32,7 +32,7 @@ public class AspectJExpressionPoincut implements Pointcut,MethodMatcher{
         SUPPORTED_PRIMITIVES.add(PointcutPrimitive.AT_TARGET);
     }
 
-    private String experssion;
+    private String expression;
 
     private PointcutExpression pointcutExpression;
 
@@ -48,11 +48,11 @@ public class AspectJExpressionPoincut implements Pointcut,MethodMatcher{
 
     @Override
     public String getExpression() {
-        return experssion;
+        return expression;
     }
 
-    public void setExperssion(String experssion) {
-        this.experssion = experssion;
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
     /**

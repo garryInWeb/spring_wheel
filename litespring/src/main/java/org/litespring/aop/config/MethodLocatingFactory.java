@@ -3,7 +3,6 @@ package org.litespring.aop.config;
 import org.litespring.beans.factory.BeanFactory;
 import org.litespring.beans.factory.BeanFactoryAware;
 import org.litespring.beans.factory.FactoryBean;
-import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.utils.BeanUtils;
 import org.litespring.utils.StringUtils;
 

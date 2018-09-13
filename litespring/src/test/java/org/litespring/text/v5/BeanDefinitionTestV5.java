@@ -73,7 +73,7 @@ public class BeanDefinitionTestV5 extends AbstractV5Test {
                 Assert.assertTrue(innerBeanDef.getBeanClass().equals(AspectInstanceFactory.class));
 
                 List<PropertyValue> pvs = innerBeanDef.getPropertyValues();
-                Assert.assertEquals("aspectName",pvs.get(0).getName());
+                Assert.assertEquals("aspectBeanName",pvs.get(0).getName());
                 Assert.assertEquals("tx",pvs.get(0).getValue());
             }
 

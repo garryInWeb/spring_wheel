@@ -33,4 +33,8 @@ public abstract class AbstractAspectJAdvice implements Advice {
         return poincut;
     }
 
+    public Object getAdvicesInstance(){
+        return factory.getAspectInstance();
+    }
+
 }

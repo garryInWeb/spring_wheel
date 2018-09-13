@@ -39,7 +39,7 @@ public class CglibAopProxyTest extends AbstractV5Test{
         tx = new TransactionManager();
         String expression = "execution(* org.litespring.service.v5.*.placeOrder(..))";
         pc = new AspectJExpressionPoincut();
-        pc.setExperssion(expression);
+        pc.setExpression(expression);
 
         factory = this.getBeanFactory("petstore-v5.xml");
         aspectInstanceFactory = this.getAspectInstanceFactory("tx");
