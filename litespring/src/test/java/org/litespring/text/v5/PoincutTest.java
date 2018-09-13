@@ -9,7 +9,7 @@ import org.litespring.service.v5.PetStoreService;
 import java.lang.reflect.Method;
 
 /**
- * Created by zhengtengfei on 2018/8/24.
+ * 方法与表达式匹配的测试用例
  */
 public class PoincutTest {
     @Test

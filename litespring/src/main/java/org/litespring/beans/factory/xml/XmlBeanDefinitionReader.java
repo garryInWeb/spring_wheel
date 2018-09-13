@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.litespring.aop.config.ConfigBeanDefinitionParser;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.ConstructorArgument;
 import org.litespring.beans.PropertyValue;
@@ -42,6 +43,8 @@ public class XmlBeanDefinitionReader {
 
     public static final String CONTEXT_NAMESPACE_URI = "http://www.springframework.org/schema/context";
 
+    public static final String AOP_NAMESPACE_URI = "http://www.springframework.org/schema/aop";
+
     private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
 
     BeanDefinitionRegister beanDefinitionRegister;
@@ -72,6 +75,8 @@ public class XmlBeanDefinitionReader {
                     parseDefaultElement(el);
                 }else if (this.isContextNamespace(namespaceUri)){
                     parseContextElement(el);
+                }else if (this.isAopNamespace(namespaceUri)){
+                    parseAopElement(el);
                 }
 
             }
@@ -88,6 +93,11 @@ public class XmlBeanDefinitionReader {
             }
         }
 
+    }
+
+    private void parseAopElement(Element el) {
+        ConfigBeanDefinitionParser parser = new ConfigBeanDefinitionParser();
+        parser.parse(el,this.beanDefinitionRegister);
     }
 
     /**
@@ -136,6 +146,17 @@ public class XmlBeanDefinitionReader {
     private boolean isDefaultNamespace(String namespaceUri) {
         return (StringUtils.hasLength(namespaceUri) && BEANS_NAMESPACE_URI.equals(namespaceUri));
     }
+
+    /**
+     * 判断是否为 AOP 的命名空间
+     * @param namespaceUri
+     * @return
+     */
+    private boolean isAopNamespace(String namespaceUri) {
+        return (StringUtils.hasLength(namespaceUri) && AOP_NAMESPACE_URI.equals(namespaceUri));
+
+    }
+
 
     /**
      * 获取配置文件中 bean 下的 constructor-arg 信息

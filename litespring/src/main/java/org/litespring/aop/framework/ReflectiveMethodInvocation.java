@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * Created by zhengtengfei on 2018/9/2.
+ * 目标方法的代理类，再目标方法执行前循环执行一遍MethodInterceptor List
  */
 public class ReflectiveMethodInvocation implements MethodInvocation{
 
@@ -41,10 +41,20 @@ public class ReflectiveMethodInvocation implements MethodInvocation{
         return arguments;
     }
 
+    /**
+     * 执行目标方法
+     * @return
+     * @throws Throwable
+     */
     protected Object invokeJoinpoint() throws Throwable {
         return this.targetMethod.invoke(targetObject,arguments);
     }
 
+    /**
+     * 循环执行MethodInterceptor
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object proceed() throws Throwable {
         if (this.currentInterceptorsIndex == this.interceptors.size() - 1){

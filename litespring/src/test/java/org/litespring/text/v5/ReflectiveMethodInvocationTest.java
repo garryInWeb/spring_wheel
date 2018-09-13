@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zhengtengfei on 2018/9/1.
+ * 方法代理器的测试
  */
 public class ReflectiveMethodInvocationTest extends AbstractV5Test{
 
@@ -98,8 +98,5 @@ public class ReflectiveMethodInvocationTest extends AbstractV5Test{
             Assert.assertTrue("start tx".equals(MessageTracker.getMsgs().get(0)));
             Assert.assertTrue("rollback tx".equals(MessageTracker.getMsgs().get(1)));
         }
-
-
-
     }
 }
