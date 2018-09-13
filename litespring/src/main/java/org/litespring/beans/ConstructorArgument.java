@@ -13,8 +13,8 @@ public class ConstructorArgument {
     public ConstructorArgument() {
     }
 
-    public void addArgumentValue(ValueHolder valueHolder){
-        this.valueHolderList.add(valueHolder);
+    public void addArgumentValue(Object valueHolder){
+        this.valueHolderList.add(new ValueHolder(valueHolder));
     }
 
     public List<ValueHolder> getValueHolderList() {

@@ -8,6 +8,14 @@ public class TransactionManager {
 		System.out.println("start tx");	
 		MessageTracker.addMsg("start tx");
 	}
+	public void start(int i){
+		System.out.println("start tx");
+		MessageTracker.addMsg("start tx");
+	}
+	public void start(String i){
+		System.out.println("start tx");
+		MessageTracker.addMsg("start tx");
+	}
 	public void commit(){
 		System.out.println("commit tx");
 		MessageTracker.addMsg("commit tx");

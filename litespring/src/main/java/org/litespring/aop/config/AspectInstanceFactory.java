@@ -5,7 +5,7 @@ import org.litespring.beans.factory.BeanFactoryAware;
 import org.litespring.utils.StringUtils;
 
 /**
- * Created by zhengtengfei on 2018/9/4.
+ * 生成拦截对象的factory
  */
 public class AspectInstanceFactory implements BeanFactoryAware{
     private String aspectBeanName;

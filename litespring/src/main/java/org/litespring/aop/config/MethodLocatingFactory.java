@@ -10,7 +10,7 @@ import org.litespring.utils.StringUtils;
 import java.lang.reflect.Method;
 
 /**
- * Created by zhengtengfei on 2018/8/28.
+ * 获取目标对象的方法对象的factory
  */
 public class MethodLocatingFactory implements FactoryBean,BeanFactoryAware {
 

@@ -12,12 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by zhengtengfei on 2018/8/24.
+ * 面向切面表达式的类，对方法和表达式进行匹配，主要使用aspectjweaver提供的方法进行匹配
  */
 public class AspectJExpressionPoincut implements Pointcut,MethodMatcher{
 
     private static final Set<PointcutPrimitive> SUPPORTED_PRIMITIVES = new HashSet<>();
 
+    // 定义支持的原生切点函数
     static{
         SUPPORTED_PRIMITIVES.add(PointcutPrimitive.EXECUTION);
         SUPPORTED_PRIMITIVES.add(PointcutPrimitive.ARGS);
@@ -54,23 +55,28 @@ public class AspectJExpressionPoincut implements Pointcut,MethodMatcher{
         this.experssion = experssion;
     }
 
+    /**
+     * 对方法和表达式进行匹配
+     * @param method 匹配的方法
+     * @return 是否匹配上
+     */
     @Override
     public boolean matches(Method method) {
-
+        // 懒加载的模式来加载 pointcutExpression
         checkReadyToMatch();
+        // 获取匹配后的实体
         ShadowMatch shadowMatch = getShadowMatch(method);
 
         if (shadowMatch.alwaysMatches()){
             return true;
         }
         return false;
-
     }
-
 
     private ShadowMatch getShadowMatch(Method method){
         ShadowMatch shadowMatch = null;
         try{
+            // 表达式匹配核心
             shadowMatch = this.pointcutExpression.matchesMethodExecution(method);
         }catch (ReflectionWorldException ex){
             throw new RuntimeException("not implemented yet");
@@ -78,6 +84,9 @@ public class AspectJExpressionPoincut implements Pointcut,MethodMatcher{
         return shadowMatch;
     }
 
+    /**
+     * 懒加载的模式来加载 pointcutExpression
+     */
     private void checkReadyToMatch() {
         if (getExpression() == null){
             throw new IllegalStateException("Must set property 'expression' before attempt to matches!");
@@ -89,6 +98,11 @@ public class AspectJExpressionPoincut implements Pointcut,MethodMatcher{
 
     }
 
+    /**
+     * 通过支持的表达式 来创建pointcutExpression，
+     * @param pointcutClassLoader
+     * @return
+     */
     private PointcutExpression buildPointcutExpression(ClassLoader pointcutClassLoader) {
         PointcutParser parser =
                 PointcutParser.getPointcutParserSupportingSpecifiedPrimitivesAndUsingSpecifiedClassLoaderForResolution(SUPPORTED_PRIMITIVES,pointcutClassLoader);

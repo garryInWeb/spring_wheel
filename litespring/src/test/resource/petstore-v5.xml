@@ -16,7 +16,7 @@
 	
 	<aop:config>
 		
-		<aop:aspect ref="tx">ApplicationContextTest5
+		<aop:aspect ref="tx">
 
 			<aop:pointcut id="placeOrder"
 				expression="execution(* org.litespring.service.v5.*.placeOrder(..))" />
