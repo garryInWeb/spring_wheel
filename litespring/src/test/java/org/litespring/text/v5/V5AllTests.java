@@ -14,6 +14,8 @@ import org.junit.runners.Suite;
         MethodLocatingFactoryTest.class,
         PoincutTest.class,
         ReflectiveMethodInvocationTest.class,
+        BeanDefinitionTestV5.class,
+        BeanFactoryTest5.class,
 }
 )
 public class V5AllTests {

@@ -127,7 +127,7 @@ public class ConfigBeanDefinitionParser {
 
         // 拦截对象
         GenericBeanDefinition aspectFactoryDef = new GenericBeanDefinition(AspectInstanceFactory.class);
-        aspectFactoryDef.getPropertyValues().add(new PropertyValue(aspectName,"aspectName"));
+        aspectFactoryDef.getPropertyValues().add(new PropertyValue(aspectName,"aspectBeanName"));
         aspectFactoryDef.setSynthetic(true);
 
         GenericBeanDefinition adviceDef = createAdviceDefinition(

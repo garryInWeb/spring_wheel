@@ -18,7 +18,7 @@ public class PoincutTest {
         String expression = "execution(* org.litespring.service.v5.*.placeOrder(..))";
 
         AspectJExpressionPoincut pc = new AspectJExpressionPoincut();
-        pc.setExperssion(expression);
+        pc.setExpression(expression);
 
         MethodMatcher mm = pc.getMethodMatcher();
 

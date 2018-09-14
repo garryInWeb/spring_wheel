@@ -4,6 +4,7 @@ import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.SimpleTypeConverter;
 import org.litespring.beans.factory.BeanCreationException;
+import org.litespring.beans.factory.BeanFactoryAware;
 import org.litespring.beans.factory.NoSuchBeanDefinitionException;
 import org.litespring.beans.factory.config.BeanPostProcessor;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
@@ -23,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 存放bean定义的map，继承的Singleton使他可以存放bean对应的对象
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements ConfigurableBeanFactory,BeanDefinitionRegister {
+public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefinitionRegister {
 
     private Map<String,BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
     private ClassLoader classLoader;
@@ -59,11 +60,25 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
      * @param bd
      * @return
      */
-    private Object createBean(BeanDefinition bd) {
+    protected Object createBean(BeanDefinition bd) {
         Object bean = instantiateBean(bd);
         populate(bd,bean);
+
+        bean = initializeBean(bd,bean);
         return bean;
     }
+
+    protected Object initializeBean(BeanDefinition bd, Object bean) {
+        invokeAwareMethods(bean);
+        return bean;
+    }
+
+    private void invokeAwareMethods(Object bean) {
+        if (bean instanceof BeanFactoryAware){
+            ((BeanFactoryAware)bean).setBeanFactory(this);
+        }
+    }
+
     public void populate(BeanDefinition bd,Object bean){
 
         for (BeanPostProcessor beanPostProcessor : this.getBeanPostProcessors()){
@@ -189,6 +204,26 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistery implements
         }
         resolveBeanClass(bd);
         return bd.getBeanClass();
+    }
+
+    @Override
+    public List<Object> getBeansByType(Class<?> type) {
+        List<Object> result = new ArrayList<>();
+        List<String> beansId = this.getBeanIDsByType(type);
+        for (String beanID : beansId){
+            result.add(this.getBean(beanID));
+        }
+        return result;
+    }
+
+    private List<String> getBeanIDsByType(Class<?> type) {
+        List<String> result = new ArrayList<>();
+        for (String beanName : this.beanDefinitionMap.keySet()){
+            if (type.isAssignableFrom(this.getType(beanName))){
+                result.add(beanName);
+            }
+        }
+        return result;
     }
 
 }
