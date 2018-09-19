@@ -70,7 +70,21 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
 
     protected Object initializeBean(BeanDefinition bd, Object bean) {
         invokeAwareMethods(bean);
+        if (!bd.isSynthetic()){
+            return applyBeanPostProcessorAfterInitialzation(bean,bd.getId());
+        }
         return bean;
+    }
+
+    private Object applyBeanPostProcessorAfterInitialzation(Object bean, String beanName) {
+        Object result = bean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()){
+            result = beanPostProcessor.afterInitialization(result,beanName);
+            if (result == null){
+                return result;
+            }
+        }
+        return result;
     }
 
     private void invokeAwareMethods(Object bean) {
@@ -80,7 +94,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
     }
 
     public void populate(BeanDefinition bd,Object bean){
-
+        // 处理 autowire 自动注入
         for (BeanPostProcessor beanPostProcessor : this.getBeanPostProcessors()){
             if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor){
                 ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postProcessPropertyValues(bean,bd.getId());

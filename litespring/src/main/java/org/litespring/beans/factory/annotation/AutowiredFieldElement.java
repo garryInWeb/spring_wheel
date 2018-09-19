@@ -19,12 +19,17 @@ public class AutowiredFieldElement extends InjectionElement {
     }
 
     public Field getField(){return (Field) this.member;}
+
+    /**
+     * 从factory中获取字段的bean，并且设置到目标对象中
+     * @param target
+     */
     @Override
     public void inject(Object target) {
         Field field = getField();
         try{
             DependencyDescriptor dependencyDescriptor = new DependencyDescriptor(field,required);
-
+            // 对factory进行循环匹配，getBean 进行赋值
             Object value = factory.resolveDenpendency(dependencyDescriptor);
 
             if (value != null){

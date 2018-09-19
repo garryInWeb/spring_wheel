@@ -13,6 +13,8 @@ public class PetStoreService {
 	AccountDao accountDao;
 	@Autowired
 	ItemDao itemDao;
+
+	String abc;
 	
 	public PetStoreService() {		
 		
