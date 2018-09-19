@@ -40,10 +40,13 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
             for (Field field : targetClass.getDeclaredFields()){
                 Annotation ann = findAutowiredAnnotation(field);
                 if (ann != null){
+                    // TODO 静态不注入？
                     if (Modifier.isStatic(field.getModifiers())){
                         continue;
                     }
+                    // 获取 required 参数，其实是执行了Autowire注解的 required()方法
                     boolean required = determineRequiredStatus(ann);
+                    // 构造每一个字段对应的Injection
                     currElements.add(new AutowiredFieldElement(field,required,beanFactory));
                 }
             }
@@ -81,5 +84,10 @@ public class AutowiredAnnotationProcessor implements InstantiationAwareBeanPostP
             throw new BeanCreationException(beanName, "Injection of autowired dependencies failed", ex);
 
         }
+    }
+
+    @Override
+    public Object afterInitialization(Object result, String beanName) {
+        return result;
     }
 }

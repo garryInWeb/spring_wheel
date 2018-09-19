@@ -35,6 +35,7 @@ public class BeanDefinitionValueResolver {
         }else if(value instanceof TypedStringValue){
             TypedStringValue refString = (TypedStringValue) value;
             return refString.getValue();
+        // 合成 bean
         }else if(value instanceof BeanDefinition){
             BeanDefinition bd = (BeanDefinition) value;
             String innerBeanName = "(inner bean)" + bd.getBeanClassName() + "#" +

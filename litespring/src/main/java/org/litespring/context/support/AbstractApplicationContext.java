@@ -1,5 +1,6 @@
 package org.litespring.context.support;
 
+import org.litespring.aop.aspectj.AspectJAutoProxyCreator;
 import org.litespring.beans.factory.annotation.AutowiredAnnotationProcessor;
 import org.litespring.beans.factory.config.ConfigurableBeanFactory;
 import org.litespring.beans.factory.support.DefaultBeanFactory;
@@ -44,9 +45,16 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
         return this.classLoader == null ? ClassUtils.getDefaultClassLoader() : this.classLoader;
     }
     public void registerBeanPostProcessors(ConfigurableBeanFactory factory){
-        AutowiredAnnotationProcessor processor = new AutowiredAnnotationProcessor();
-        processor.setBeanFactory(factory);
-        factory.addBeanPostProcessor(processor);
+        {
+            AutowiredAnnotationProcessor processor = new AutowiredAnnotationProcessor();
+            processor.setBeanFactory(factory);
+            factory.addBeanPostProcessor(processor);
+        }
+        {
+            AspectJAutoProxyCreator postProcessor = new AspectJAutoProxyCreator();
+            postProcessor.setBeanFactory(factory);
+            factory.addBeanPostProcessor(postProcessor);
+        }
     }
 
     public Class<?> getType(String name){
