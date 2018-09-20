@@ -113,6 +113,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
             propertys.stream().forEach(property -> {
                 String propertyName = property.getName();
                 Object propertyValue = property.getValue();
+                // 对对象字段进行赋值
                 Object resolverValue = resolver.resolveValueIfNecessary(propertyValue);
 
                 Arrays.stream(pds).forEach(pd -> {
@@ -233,7 +234,13 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
     private List<String> getBeanIDsByType(Class<?> type) {
         List<String> result = new ArrayList<>();
         for (String beanName : this.beanDefinitionMap.keySet()){
-            if (type.isAssignableFrom(this.getType(beanName))){
+            Class<?> beanClass = null;
+            try{
+                beanClass = this.getType(beanName);
+            }catch (Exception e){
+                continue;
+            }
+            if ((beanClass != null) && type.isAssignableFrom(beanClass)){
                 result.add(beanName);
             }
         }
