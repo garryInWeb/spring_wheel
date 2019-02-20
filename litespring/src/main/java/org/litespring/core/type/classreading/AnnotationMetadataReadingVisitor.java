@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  *
  */
-public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor implements AnnotationMetadata{
+public class  AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor implements AnnotationMetadata{
     private final Set<String> annotationSet = new LinkedHashSet<String>(4);
     private final Map<String,AnnotationAttributes> attributesMap = new LinkedHashMap<String,AnnotationAttributes>(4);
 
