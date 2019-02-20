@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public class AnnotationBeanNameGenerator implements BeanNameGenerator {
     @Override
-    public String generateBeanName(BeanDefinition definition, BeanDefinitionRegister registry) {
+    public String generateBeanName(BeanDefinition definition) {
         if (definition instanceof AnnotatedBeanDefinition){
             //获取注解的value值
             String beanName = determineBeanNameFromAnnotation((AnnotatedBeanDefinition) definition);
@@ -27,7 +27,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
                 return beanName;
             }
         }
-        return buildDefaultBeanName(definition,registry);
+        return buildDefaultBeanName(definition);
     }
 
     protected String buildDefaultBeanName(BeanDefinition definition, BeanDefinitionRegister registry) {

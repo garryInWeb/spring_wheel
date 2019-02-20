@@ -73,7 +73,7 @@ public class ClassPathBeanDefinitionScanner {
                         // 注解的抽象类
                         ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader.getAnnotationMetadata());
                         // 获取注解的value作为bean对象的id
-                        String beanName = this.beanNameGenerator.generateBeanName(sbd, register);
+                        String beanName = this.beanNameGenerator.generateBeanName(sbd);
                         sbd.setId(beanName);
                         candidates.add(sbd);
                     }
