@@ -7,6 +7,7 @@ import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.litespring.context.ApplicationContext;
 import org.litespring.core.io.Resource;
+import org.litespring.transaction.annotation.TransactionalAnnotationProcessor;
 import org.litespring.utils.ClassUtils;
 
 import java.util.List;
@@ -53,6 +54,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
         {
             AspectJAutoProxyCreator postProcessor = new AspectJAutoProxyCreator();
             postProcessor.setBeanFactory(factory);
+            factory.addBeanPostProcessor(postProcessor);
+        }
+        {
+            TransactionalAnnotationProcessor postProcessor = new TransactionalAnnotationProcessor();
             factory.addBeanPostProcessor(postProcessor);
         }
     }

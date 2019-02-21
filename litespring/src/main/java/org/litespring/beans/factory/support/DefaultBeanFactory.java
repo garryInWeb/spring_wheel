@@ -110,7 +110,7 @@ public class DefaultBeanFactory extends AbstractBeanFactory implements BeanDefin
             BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
             PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
             SimpleTypeConverter simpleTypeConverter = new SimpleTypeConverter();
-            propertys.stream().forEach(property -> {
+            propertys.forEach(property -> {
                 String propertyName = property.getName();
                 Object propertyValue = property.getValue();
                 // 对对象字段进行赋值
