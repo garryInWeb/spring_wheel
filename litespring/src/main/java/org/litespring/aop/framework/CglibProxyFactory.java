@@ -59,7 +59,6 @@ public class CglibProxyFactory implements AopProxyFactory {
                 enhancer.setClassLoader(classLoader);
             }
             enhancer.setSuperclass(rootClass);
-
             enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
             enhancer.setInterceptDuringConstruction(false);
 
