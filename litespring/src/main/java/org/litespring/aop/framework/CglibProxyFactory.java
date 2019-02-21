@@ -118,7 +118,7 @@ public class CglibProxyFactory implements AopProxyFactory {
             List<Advice> chain = this.aopConfig.getAdvices(method);
 
             Object retVal;
-            if (chain.isEmpty() && Modifier.isPublic(method.getModifiers())){
+            if (chain == null || (chain.isEmpty() && Modifier.isPublic(method.getModifiers()))){
                 retVal = methodProxy.invoke(target,args);
             }else{
                 List<org.aopalliance.intercept.MethodInterceptor> interceptors =

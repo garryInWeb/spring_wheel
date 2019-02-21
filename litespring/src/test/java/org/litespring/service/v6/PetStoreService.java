@@ -3,6 +3,7 @@ package org.litespring.service.v6;
 
 import org.litespring.stereotype.Component;
 import org.litespring.util.MessageTracker;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @Component(value="petStore")
 public class PetStoreService implements IPetStoreService {
@@ -15,7 +16,11 @@ public class PetStoreService implements IPetStoreService {
 		System.out.println("place order");
 		MessageTracker.addMsg("place order");
 	}
-	
-	
-	
+
+	@Override
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+
+	}
+
+
 }

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ApplicationTestV6 {
     @Test
-    public void testGetBeanProperty(){
+    public void testGetBeanProperty() throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("petstore-v6.xml");
         IPetStoreService iPetStoreService = (IPetStoreService)applicationContext.getBean("petStore");
 

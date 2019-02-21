@@ -12,4 +12,12 @@
 		base-package="org.litespring.service.v7">
 	</context:component-scan>
 
+	<bean id="dataSource"
+		  class="org.litespring.jdbc.datasoure.DriverManagerDataSource">
+		<constructor-arg name="driverClassName" value="com.mysql.jdbc.Driver" type="java.lang.String"/>
+		<constructor-arg name="url" value="jdbc:mysql://mysql-cg.tuandai800.cn/td_activity?allowMultiQueries=true&amp;useUnicode=true&amp;characterEncoding=UTF-8" type="java.lang.String"/>
+		<constructor-arg name="username" value="root" type="java.lang.String"/>
+		<constructor-arg name="password" value="QVkiHClEnDfSW4o9" type="java.lang.String"/>
+	</bean>
+
 </beans>

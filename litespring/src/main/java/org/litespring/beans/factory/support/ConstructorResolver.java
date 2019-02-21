@@ -82,7 +82,7 @@ public class ConstructorResolver {
                 //获得真正的值
                 Object resvoledValue = resolver.resolveValueIfNecessary(orignialValue);
                 // 转型
-                Object convertedValue = simpleTypeConverter.converterIfNecessary(resvoledValue,parameters[i]);
+                Object convertedValue = simpleTypeConverter.converterIfNecessary(((ConstructorArgument.ValueHolder)resvoledValue).getValue(),parameters[i]);
                 // 转型成功，记录返回
                 argsToUser[i] = convertedValue;
             } catch (Exception e) {
