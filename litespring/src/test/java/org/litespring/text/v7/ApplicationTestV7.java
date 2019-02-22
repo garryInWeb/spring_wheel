@@ -18,7 +18,7 @@ public class ApplicationTestV7 {
         applicationContext.getBean("dataSource");
         PetStoreService iPetStoreService = (PetStoreService)applicationContext.getBean("petStore");
         try {
-            iPetStoreService.placeOrder();
+            iPetStoreService.placeOrder1();
         } catch (Exception e) {
             e.printStackTrace();
         }

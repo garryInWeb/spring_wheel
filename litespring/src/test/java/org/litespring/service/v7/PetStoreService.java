@@ -18,11 +18,22 @@ public class PetStoreService {
 	}
 	@Transactional
 	public void placeOrder() throws Exception {
+		System.out.println("placeOrder");
 		String sql = "UPDATE score SET age=age+1 WHERE id=2";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		int users = ps.executeUpdate();
 		System.out.println(users);
 //		throw new Exception("gg");
+	}
+
+	@Transactional
+	public void placeOrder1() throws Exception {
+		String sql = "UPDATE score SET age=age+1 WHERE id=3";
+		placeOrder();
+		PreparedStatement ps = conn.prepareStatement(sql);
+		int users = ps.executeUpdate();
+		System.out.println(users);
+		throw new Exception("gg");
 	}
 
 }
