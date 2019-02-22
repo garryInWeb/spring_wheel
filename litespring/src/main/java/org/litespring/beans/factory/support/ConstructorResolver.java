@@ -80,9 +80,9 @@ public class ConstructorResolver {
             Object orignialValue = valueHolder.getValue();
             try{
                 //获得真正的值
-                Object resvoledValue = resolver.resolveValueIfNecessary(orignialValue);
+                Object resvoledValue = resolver.resolveValueIfNecessary(((ConstructorArgument.ValueHolder)orignialValue).getValue());
                 // 转型
-                Object convertedValue = simpleTypeConverter.converterIfNecessary(((ConstructorArgument.ValueHolder)resvoledValue).getValue(),parameters[i]);
+                Object convertedValue = simpleTypeConverter.converterIfNecessary(resvoledValue,parameters[i]);
                 // 转型成功，记录返回
                 argsToUser[i] = convertedValue;
             } catch (Exception e) {

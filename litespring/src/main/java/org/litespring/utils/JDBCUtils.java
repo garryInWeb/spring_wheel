@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by zhengtengfei on 2019/2/21.
  */
-public  class JDBCUtils {
+public class JDBCUtils {
 
     static Connection connection;
 
@@ -15,6 +15,6 @@ public  class JDBCUtils {
         return connection;
     }
     public static void set(Connection connection){
-        connection = connection;
+        JDBCUtils.connection = connection;
     }
 }

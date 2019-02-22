@@ -22,7 +22,7 @@ public class PetStoreService {
 		PreparedStatement ps = conn.prepareStatement(sql);
 		int users = ps.executeUpdate();
 		System.out.println(users);
-		throw new Exception("gg");
+//		throw new Exception("gg");
 	}
 
 }
